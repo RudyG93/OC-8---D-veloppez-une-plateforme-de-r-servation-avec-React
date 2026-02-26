@@ -12,7 +12,7 @@ export default async function Home() {
                         <h2>{property.title}</h2>
                         <p>{property.location} — {property.price_per_night}€/nuit</p>
                         <p>⭐ {property.rating_avg}/5 ({property.ratings_count} avis)</p>
-                        <p style={{ color: '#666' }}>Hébergé par {property.host.name}</p>
+                        <p style={{ color: 'var(--color-dark-gray)' }}>Hébergé par {property.host.name}</p>
                     </li>
                 ))}
             </ul>
