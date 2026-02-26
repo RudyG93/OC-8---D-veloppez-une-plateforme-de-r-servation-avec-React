@@ -1,28 +1,48 @@
-import { API_BASE_URL } from '@/lib/api';
-import type { Property, PropertyDetail } from '@/types/property';
+import { apiFetch, authHeaders } from '@/lib/api';
+import type { Property, PropertyDetail, CreatePropertyBody, UpdatePropertyBody } from '@/types/property';
 
 /**
  * Récupère toutes les propriétés
  */
 export async function getProperties(): Promise<Property[]> {
-    const response = await fetch(`${API_BASE_URL}/api/properties`);
-
-    if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
-    }
-
-    return response.json();
+    return apiFetch<Property[]>('/api/properties');
 }
 
 /**
- * Récupère une propriété par son ID
+ * Récupère une propriété par son ID (détail complet)
  */
 export async function getPropertyById(id: string): Promise<PropertyDetail> {
-    const response = await fetch(`${API_BASE_URL}/api/properties/${id}`);
+    return apiFetch<PropertyDetail>(`/api/properties/${id}`);
+}
 
-    if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
-    }
+/**
+ * Crée une nouvelle propriété (requiert rôle owner/admin)
+ */
+export async function createProperty(body: CreatePropertyBody): Promise<PropertyDetail> {
+    return apiFetch<PropertyDetail>('/api/properties', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(body),
+    });
+}
 
-    return response.json();
+/**
+ * Met à jour une propriété (requiert rôle owner/admin)
+ */
+export async function updateProperty(id: string, body: UpdatePropertyBody): Promise<PropertyDetail> {
+    return apiFetch<PropertyDetail>(`/api/properties/${id}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify(body),
+    });
+}
+
+/**
+ * Supprime une propriété (requiert rôle owner/admin)
+ */
+export async function deleteProperty(id: string): Promise<void> {
+    return apiFetch<void>(`/api/properties/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+    });
 }
