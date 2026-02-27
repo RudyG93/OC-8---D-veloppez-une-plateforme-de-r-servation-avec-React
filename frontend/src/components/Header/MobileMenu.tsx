@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "@/components/Ui/Button";
 import MenuIcon from "@/components/Icons/MenuIcon";
 import CloseIcon from "@/components/Icons/CloseIcon";
 
@@ -79,13 +80,9 @@ export default function MobileMenu() {
                         </Link>
 
                         {/* Bouton CTA */}
-                        <Link
-                            href="/properties/add"
-                            onClick={close}
-                            className="my-6 self-start bg-main-red hover:bg-dark-orange text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
-                        >
-                            Ajouter un logement
-                        </Link>
+                        <div className="my-6 self-start" onClick={close}>
+                            <Button href="/properties/add">Ajouter un logement</Button>
+                        </div>
                     </nav>
                 </div>
             )}
