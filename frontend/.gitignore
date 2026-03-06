@@ -50,3 +50,6 @@ Thumbs.db
 
 # Misc
 *.pem
+
+*storybook.log
+storybook-static

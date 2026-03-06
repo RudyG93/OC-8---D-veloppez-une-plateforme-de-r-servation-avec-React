@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${inter.variable} antialiased min-h-screen flex flex-col`}>
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <FavoritesProvider>
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </FavoritesProvider>
       </body>
     </html>
   );
