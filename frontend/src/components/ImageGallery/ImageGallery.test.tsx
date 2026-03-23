@@ -6,6 +6,7 @@ import ImageGallery from "./ImageGallery";
 vi.mock("next/image", () => ({
     default: (props: Record<string, unknown>) => {
         const { fill, priority, ...rest } = props;
+        // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
         return <img {...rest} data-fill={fill ? "true" : undefined} data-priority={priority ? "true" : undefined} />;
     },
 }));

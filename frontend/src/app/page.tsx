@@ -90,12 +90,12 @@ export default async function Home() {
                     {STEPS.map((step) => (
                         <div
                             key={step.title}
-                            className="rounded-[10px] border-t-4 border-main-red bg-white p-6"
+                            className="rounded-[10px] bg-main-red p-6"
                         >
-                            <h3 className="text-lg font-bold text-main-red">
+                            <h3 className="text-lg font-bold text-white">
                                 {step.title}
                             </h3>
-                            <p className="mt-2 text-sm text-dark-gray">
+                            <p className="mt-2 text-sm text-white/80">
                                 {step.description}
                             </p>
                         </div>
