@@ -3,11 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 import Button from "@/components/Ui/Button";
 import MenuIcon from "@/components/Icons/MenuIcon";
 import CloseIcon from "@/components/Icons/CloseIcon";
 
 export default function MobileMenu() {
+    const { isAuthenticated, user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
 
     const close = () => setIsOpen(false);
@@ -63,7 +65,7 @@ export default function MobileMenu() {
                         <hr className="border-light-gray" />
 
                         <Link
-                            href="/login"
+                            href="/contact"
                             onClick={close}
                             className="py-5 text-lg text-black hover:text-main-red transition-colors"
                         >
@@ -83,6 +85,25 @@ export default function MobileMenu() {
                         <div className="my-6 self-start" onClick={close}>
                             <Button href="/properties/add">Ajouter un logement</Button>
                         </div>
+
+                        <hr className="border-light-gray" />
+
+                        {isAuthenticated ? (
+                            <button
+                                onClick={() => { logout(); close(); }}
+                                className="py-5 text-lg text-left text-dark-gray hover:text-main-red transition-colors cursor-pointer"
+                            >
+                                Se déconnecter ({user?.name?.split(" ")[0]})
+                            </button>
+                        ) : (
+                            <Link
+                                href="/login"
+                                onClick={close}
+                                className="py-5 text-lg text-main-red hover:text-dark-orange transition-colors"
+                            >
+                                Se connecter
+                            </Link>
+                        )}
                     </nav>
                 </div>
             )}

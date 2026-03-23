@@ -80,6 +80,12 @@ if (typeof window !== "undefined") {
     snapshot = readFromStorage();
 }
 
+/** Réinitialise l'état interne – usage tests uniquement */
+export function __resetFavoritesStore() {
+    snapshot = readFromStorage();
+    notifyListeners();
+}
+
 /* -------- Provider -------- */
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {

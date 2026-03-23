@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import FavIcon from "@/components/Icons/FavIcon";
-import MsgIcon from "@/components/Icons/MsgIcon";
+import AuthNav from "./AuthNav";
 import MobileMenu from "./MobileMenu";
 
 export default function Header() {
@@ -30,20 +29,7 @@ export default function Header() {
                         />
                     </Link>
 
-                    <div className="flex items-center gap-8 lg:gap-20">
-                        <Link href="/properties/add" className="text-sm text-main-red hover:text-dark-orange transition-colors whitespace-nowrap">
-                            +Ajouter un logement
-                        </Link>
-                        <div className="flex items-center gap-2 lg:gap-3">
-                            <Link href="/favorites" aria-label="Favoris" className="text-main-red hover:text-dark-orange transition-colors">
-                                <FavIcon />
-                            </Link>
-                            <span className="text-dark-gray/30">|</span>
-                            <Link href="/login" aria-label="Messages" className="text-main-red hover:text-dark-orange transition-colors">
-                                <MsgIcon />
-                            </Link>
-                        </div>
-                    </div>
+                    <AuthNav />
                 </div>
             </div>
 

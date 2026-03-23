@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/api';
+import { API_BASE_URL, getToken } from '@/lib/api';
 
 export interface UploadResponse {
     url: string;
@@ -23,14 +23,8 @@ export async function uploadImage(
     if (options?.purpose) formData.append('purpose', options.purpose);
     if (options?.property_id) formData.append('property_id', options.property_id);
 
-    // Récupérer le token manuellement (pas de Content-Type header pour FormData)
-    let token = '';
-    if (typeof document !== 'undefined') {
-        const match = document.cookie.match(/(?:^|; )token=([^;]*)/);
-        if (match) token = decodeURIComponent(match[1]);
-    }
-
     const headers: Record<string, string> = {};
+    const token = getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
 
     const response = await fetch(`${API_BASE_URL}/api/uploads/image`, {

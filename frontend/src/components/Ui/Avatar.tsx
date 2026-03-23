@@ -39,6 +39,7 @@ export default function Avatar({ src, alt, size = "md", className = "" }: Avatar
             alt={alt}
             width={px}
             height={px}
+            unoptimized
             className={`shrink-0 rounded-[10px] object-cover ${className}`}
         />
     );

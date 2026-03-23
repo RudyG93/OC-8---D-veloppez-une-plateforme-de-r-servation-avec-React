@@ -3,7 +3,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://loca
 /**
  * Récupère le token JWT depuis les cookies (côté client uniquement)
  */
-function getToken(): string {
+export function getToken(): string {
     if (typeof document === 'undefined') return '';
     const match = document.cookie.match(/(?:^|; )token=([^;]*)/);
     return match ? decodeURIComponent(match[1]) : '';
