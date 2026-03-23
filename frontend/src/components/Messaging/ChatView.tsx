@@ -11,7 +11,10 @@ interface ChatViewProps {
     onSend: (content: string) => void;
 }
 
-/** Regroupe les messages par date (ex: "03 Septembre 2025") */
+/**
+ * Regroupe les messages par date (ex: "03 Septembre 2025").
+ * Itère une seule fois sur le tableau pour créer les groupes séquentiels.
+ */
 function groupByDate(messages: Message[]) {
     const groups: { date: string; messages: Message[] }[] = [];
 
@@ -33,6 +36,7 @@ function groupByDate(messages: Message[]) {
     return groups;
 }
 
+/** Vue de chat : affiche les messages groupés par date avec auto-scroll et zone de saisie. */
 export default function ChatView({ messages, currentUserId, onSend }: ChatViewProps) {
     const bottomRef = useRef<HTMLDivElement>(null);
 

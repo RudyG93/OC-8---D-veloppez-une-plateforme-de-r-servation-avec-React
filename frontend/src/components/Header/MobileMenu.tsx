@@ -82,8 +82,8 @@ export default function MobileMenu() {
                         </Link>
 
                         {/* Bouton CTA */}
-                        <div className="my-6 self-start" onClick={close}>
-                            <Button href="/properties/add">Ajouter un logement</Button>
+                        <div className="my-6 self-start">
+                            <Button href="/properties/add" onClick={close}>Ajouter un logement</Button>
                         </div>
 
                         <hr className="border-light-gray" />

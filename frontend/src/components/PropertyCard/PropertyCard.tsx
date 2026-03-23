@@ -7,6 +7,7 @@ interface PropertyCardProps {
     property: Property;
 }
 
+/** Carte de propriété avec image, prix, localisation et bouton favori. */
 export default function PropertyCard({ property }: PropertyCardProps) {
     const { id, title, cover, location, price_per_night } = property;
 

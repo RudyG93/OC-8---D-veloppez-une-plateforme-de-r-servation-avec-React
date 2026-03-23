@@ -8,20 +8,25 @@ interface CollapseProps {
     defaultOpen?: boolean;
 }
 
+/**
+ * Panneau repliable avec animation de hauteur.
+ * Gère l'ouverture/fermeture avec transition CSS sur la propriété height.
+ */
 export default function Collapse({ title, children, defaultOpen = false }: CollapseProps) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     const contentRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState<number | undefined>(defaultOpen ? undefined : 0);
 
+    // Animation de hauteur en 2 étapes :
+    // Ouverture : scrollHeight → auto (auto après transition pour supporter le contenu dynamique)
+    // Fermeture : scrollHeight → 0 (double rAF pour forcer le reflow entre les deux valeurs)
     useEffect(() => {
         if (!contentRef.current) return;
         if (isOpen) {
             setHeight(contentRef.current.scrollHeight);
-            // Après la transition, passer à auto pour supporter le contenu dynamique
             const timer = setTimeout(() => setHeight(undefined), 300);
             return () => clearTimeout(timer);
         } else {
-            // D'abord fixer la hauteur actuelle, puis la passer à 0
             setHeight(contentRef.current.scrollHeight);
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => setHeight(0));

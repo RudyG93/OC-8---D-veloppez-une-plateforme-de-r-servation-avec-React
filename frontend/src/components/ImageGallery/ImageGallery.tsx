@@ -8,10 +8,16 @@ interface ImageGalleryProps {
     alt: string;
 }
 
+/**
+ * Carousel d'images avec navigation par flèches et clavier.
+ * Boucle automatiquement de la dernière à la première image et inversement.
+ * Masque les contrôles quand il n'y a qu'une seule image.
+ */
 export default function ImageGallery({ images, alt }: ImageGalleryProps) {
     const [current, setCurrent] = useState(0);
     const total = images.length;
 
+    // Navigation circulaire : modulo pour boucler du premier au dernier et inversement
     const prev = useCallback(() => {
         setCurrent((i) => (i - 1 + total) % total);
     }, [total]);

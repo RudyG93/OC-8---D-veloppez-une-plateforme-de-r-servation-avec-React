@@ -5,8 +5,10 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
 /**
+ * Hook de garde d'authentification.
  * Redirige vers /login si l'utilisateur n'est pas connecté.
- * Ajoute un paramètre ?redirect= pour revenir après connexion.
+ * Ajoute un paramètre ?redirect= pour revenir automatiquement après connexion.
+ * @returns { user, isLoading } — l'utilisateur courant et un flag de chargement
  */
 export function useRequireAuth() {
     const { user, isAuthenticated, isLoading } = useAuth();

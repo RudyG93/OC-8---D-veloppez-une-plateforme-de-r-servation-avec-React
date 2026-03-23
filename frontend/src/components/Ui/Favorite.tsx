@@ -7,6 +7,10 @@ interface FavoriteProps {
     className?: string;
 }
 
+/**
+ * Bouton cœur pour ajouter/retirer une propriété des favoris.
+ * Se connecte au FavoritesContext global (localStorage).
+ */
 export default function Favorite({ propertyId, className = "" }: FavoriteProps) {
     const { isFavorite, toggleFavorite } = useFavorites();
     const liked = isFavorite(propertyId);

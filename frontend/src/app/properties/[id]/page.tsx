@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getPropertyById } from "@/api/properties";
 import ImageGallery from "@/components/ImageGallery/ImageGallery";
 import Avatar from "@/components/Ui/Avatar";
@@ -13,6 +14,24 @@ interface Props {
     params: Promise<{ id: string }>;
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    try {
+        const property = await getPropertyById(id);
+        return {
+            title: property.title,
+            description: property.description || `Découvrez ${property.title} sur Kasa`,
+            openGraph: {
+                title: property.title,
+                description: property.description || `Découvrez ${property.title} sur Kasa`,
+                images: property.pictures.length > 0 ? [property.pictures[0]] : [],
+            },
+        };
+    } catch {
+        return { title: "Logement introuvable" };
+    }
+}
+
 export default async function PropertyPage({ params }: Props) {
     const { id } = await params;
 
@@ -23,15 +42,38 @@ export default async function PropertyPage({ params }: Props) {
         notFound();
     }
 
-    const { title, location, description, host, rating_avg, pictures, equipments, tags } =
+    const { title, location, description, host, rating_avg, pictures, equipments, tags, price_per_night } =
         property;
+
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "LodgingBusiness",
+        name: title,
+        description: description || undefined,
+        image: pictures.length > 0 ? pictures[0] : undefined,
+        address: location
+            ? { "@type": "PostalAddress", addressLocality: location }
+            : undefined,
+        aggregateRating: rating_avg > 0
+            ? {
+                  "@type": "AggregateRating",
+                  ratingValue: rating_avg,
+                  bestRating: 5,
+              }
+            : undefined,
+        priceRange: price_per_night ? `${price_per_night}€ / nuit` : undefined,
+    };
 
     return (
         <main className="mx-auto max-w-6xl px-5 py-8">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Retour */}
             <Link
                 href="/"
-                className="inline-block rounded-[10px] bg-light-gray px-4 py-2 text-sm text-dark-gray transition-colors ml-5 mt-10 hover:bg-dark-gray"
+                className="inline-block rounded-[10px] bg-light-gray px-4 py-2 text-sm text-dark-gray transition-colors ml-5 mt-10 hover:bg-dark-gray/10"
             >
                 <div className="inline-block mr-1">
                     <Image src="/icons/ico-back.svg" alt="Retour aux annonces" width={10} height={10} />

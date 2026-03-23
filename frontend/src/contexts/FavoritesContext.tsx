@@ -19,9 +19,12 @@ interface FavoritesContextValue {
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
+/** Clé localStorage pour persister les IDs de propriétés en favoris */
 const STORAGE_KEY = "kasa_favorites";
 
 /* -------- Store externe (localStorage) -------- */
+// Pattern useSyncExternalStore : un store module-level avec snapshot immuable
+// permet à React de souscrire aux changements sans useState dans le provider
 
 let listeners: Array<() => void> = [];
 let snapshot: string[] = [];
@@ -51,7 +54,8 @@ function getSnapshot(): string[] {
     return snapshot;
 }
 
-// Référence stable pour le SSR (un nouveau [] à chaque appel cause une boucle infinie)
+// Référence stable pour le SSR : un nouveau [] à chaque appel causerait une boucle
+// infinie de re-renders dans useSyncExternalStore
 const SERVER_SNAPSHOT: string[] = [];
 
 function getServerSnapshot(): string[] {
@@ -64,7 +68,7 @@ function readFromStorage(): string[] {
         if (!raw) return [];
         const parsed: unknown = JSON.parse(raw);
         return Array.isArray(parsed) ? (parsed as string[]) : [];
-    } catch (_e: unknown) {
+    } catch {
         return [];
     }
 }

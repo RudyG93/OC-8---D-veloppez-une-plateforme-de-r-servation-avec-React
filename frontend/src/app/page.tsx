@@ -23,8 +23,24 @@ const STEPS = [
 export default async function Home() {
     const properties = await getProperties();
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Logements disponibles sur Kasa",
+        itemListElement: properties.map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}/properties/${p.id}`,
+            name: p.title,
+        })),
+    };
+
     return (
         <main>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* ============ HERO ============ */}
             <section className="mx-auto max-w-6xl px-5 pt-10 pb-6 text-center md:pt-14 md:pb-10">
                 <h1 className="text-2xl font-bold text-main-red md:text-3xl lg:text-4xl">

@@ -4,7 +4,6 @@ import {
     createContext,
     useContext,
     useState,
-    useEffect,
     useCallback,
     type ReactNode,
 } from "react";
@@ -26,6 +25,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 /* -------- Helpers cookie -------- */
 
+/** Stocke le JWT dans un cookie avec 30 jours d'expiration */
 function setTokenCookie(token: string) {
     document.cookie = `token=${encodeURIComponent(token)}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
 }
@@ -84,28 +84,27 @@ function clearUser() {
 
 /* -------- Provider -------- */
 
+/**
+ * Fournit l'état d'authentification à toute l'application.
+ * Restaure la session depuis le cookie JWT et localStorage au montage.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<AuthUser | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    // Au montage, restaurer la session depuis le cookie + localStorage
-    useEffect(() => {
+    // Initialisation lazy : restaure la session depuis cookie + localStorage sans effet
+    const [user, setUser] = useState<AuthUser | null>(() => {
+        if (typeof window === "undefined") return null;
         const token = getToken();
-        if (token) {
-            // Essayer localStorage d'abord, sinon décoder le JWT
-            const stored = loadUser();
-            if (stored) {
-                setUser(stored);
-            } else {
-                const decoded = decodeJwtPayload(token);
-                if (decoded) {
-                    setUser(decoded);
-                    saveUser(decoded);
-                }
-            }
+        if (!token) return null;
+        // Priorité localStorage (données complètes) > décodage JWT (données partielles)
+        const stored = loadUser();
+        if (stored) return stored;
+        const decoded = decodeJwtPayload(token);
+        if (decoded) {
+            saveUser(decoded);
+            return decoded;
         }
-        setIsLoading(false);
-    }, []);
+        return null;
+    });
+    const [isLoading] = useState(false);
 
     const login = useCallback(async (body: LoginBody) => {
         const res = await apiLogin(body);

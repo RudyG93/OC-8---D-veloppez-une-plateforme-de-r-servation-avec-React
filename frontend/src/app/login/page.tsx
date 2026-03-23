@@ -65,7 +65,7 @@ function LoginForm() {
                     />
 
                     {error && (
-                        <p className="text-sm text-red-600">{error}</p>
+                        <p className="text-sm text-red-600" role="alert">{error}</p>
                     )}
 
                     <Button variant="full" type="submit" disabled={loading}>
@@ -73,17 +73,12 @@ function LoginForm() {
                     </Button>
                 </form>
 
-                <div className="mt-6 flex flex-col items-center gap-2 text-sm">
-                    <Link href="/forgot-password" className="text-main-red hover:underline">
-                        Mot de passe oublié
+                <p className="mt-6 text-center text-sm text-dark-gray">
+                    Pas encore de compte ?{" "}
+                    <Link href="/register" className="font-bold text-main-red hover:underline">
+                        Inscrivez-vous
                     </Link>
-                    <p className="text-dark-gray">
-                        Pas encore de compte ?{" "}
-                        <Link href="/register" className="font-bold text-main-red hover:underline">
-                            Inscrivez-vous
-                        </Link>
-                    </p>
-                </div>
+                </p>
             </div>
         </main>
     );
@@ -91,7 +86,13 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <Suspense>
+        <Suspense
+            fallback={
+                <main className="flex min-h-[60vh] items-center justify-center text-dark-gray">
+                    Chargement...
+                </main>
+            }
+        >
             <LoginForm />
         </Suspense>
     );
