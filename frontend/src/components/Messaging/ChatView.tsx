@@ -85,7 +85,7 @@ export default function ChatView({ messages, currentUserId, onSend }: ChatViewPr
             </div>
 
             {/* Zone de saisie */}
-            <div className="border-t border-light-gray p-4">
+            <div className="border-t border-light-gray bg-white p-4">
                 <InputMessage
                     placeholder="Envoyer un message"
                     onSubmit={onSend}

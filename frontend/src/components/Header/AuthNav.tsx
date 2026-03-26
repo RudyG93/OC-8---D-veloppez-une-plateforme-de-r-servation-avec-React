@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
-import FavIcon from "@/components/Icons/FavIcon";
-import MsgIcon from "@/components/Icons/MsgIcon";
 
 export default function AuthNav() {
     const { user, isAuthenticated, logout } = useAuth();
@@ -17,12 +16,12 @@ export default function AuthNav() {
                 +Ajouter un logement
             </Link>
             <div className="flex items-center gap-2 lg:gap-3">
-                <Link href="/favorites" aria-label="Favoris" className="text-main-red hover:text-dark-orange transition-colors">
-                    <FavIcon />
+                <Link href="/favorites" aria-label="Favoris" className="hover:opacity-70 transition-opacity">
+                    <Image src="/icons/ico-fav-header.svg" alt="Favoris" width={18} height={18} />
                 </Link>
                 <span className="text-dark-gray/30">|</span>
-                <Link href="/contact" aria-label="Messages" className="text-main-red hover:text-dark-orange transition-colors">
-                    <MsgIcon />
+                <Link href="/contact" aria-label="Messages" className="hover:opacity-70 transition-opacity">
+                    <Image src="/icons/ico-contact.svg" alt="Messagerie" width={18} height={18} />
                 </Link>
             </div>
             {isAuthenticated ? (

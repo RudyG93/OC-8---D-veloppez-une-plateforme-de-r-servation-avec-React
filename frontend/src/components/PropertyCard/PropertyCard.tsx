@@ -14,10 +14,10 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     return (
         <Link
             href={`/properties/${id}`}
-            className="group block rounded-[10px] bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md"
+            className="group block rounded-[10px] bg-white overflow-hidden transition-shadow"
         >
             {/* -------- Image + bouton favori -------- */}
-            <div className="relative aspect-3/4 w-full overflow-hidden">
+            <div className="relative aspect-square w-full overflow-hidden">
                 {cover ? (
                     <Image
                         src={cover}
@@ -40,14 +40,15 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             </div>
 
             {/* -------- Infos -------- */}
-            <div className="flex flex-col gap-2 p-5">
-                <h3 className="font-bold text-base truncate">{title}</h3>
+            <div className="flex flex-col gap-1.5 p-5 pb-6">
+                <div className="flex flex-col gap-1.5">
+                    <h3 className="font-bold text-lg truncate">{title}</h3>
+                    {location && (
+                        <p className="text-sm text-dark-gray truncate">{location}</p>
+                    )}
+                </div>
 
-                {location && (
-                    <p className="text-sm text-dark-gray truncate">{location}</p>
-                )}
-
-                <p className="mt-1 text-sm">
+                <p className="mt-4 text-sm">
                     <span className="font-bold">{price_per_night}&euro;</span>{" "}
                     par nuit
                 </p>

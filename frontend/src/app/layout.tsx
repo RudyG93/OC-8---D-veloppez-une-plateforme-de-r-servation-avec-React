@@ -62,7 +62,7 @@ export default function RootLayout({
         <AuthProvider>
           <FavoritesProvider>
             <Header />
-            <div className="flex-1" id="main-content">{children}</div>
+            <div className="flex flex-1 flex-col min-h-0" id="main-content">{children}</div>
             <Footer />
           </FavoritesProvider>
         </AuthProvider>

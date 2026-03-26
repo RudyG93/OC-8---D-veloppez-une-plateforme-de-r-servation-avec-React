@@ -5,8 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import Button from "@/components/Ui/Button";
-import MenuIcon from "@/components/Icons/MenuIcon";
-import CloseIcon from "@/components/Icons/CloseIcon";
 
 export default function MobileMenu() {
     const { isAuthenticated, user, logout } = useAuth();
@@ -19,10 +17,10 @@ export default function MobileMenu() {
             {/* Bouton burger */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 text-dark-gray"
+                className="p-2"
                 aria-label="Ouvrir le menu"
             >
-                <MenuIcon />
+                <Image src="/icons/menu-mobile.svg" alt="Menu" width={24} height={24} />
             </button>
 
             {/* Overlay plein écran */}
@@ -39,8 +37,8 @@ export default function MobileMenu() {
                                 unoptimized
                             />
                         </Link>
-                        <button onClick={close} className="p-2 text-dark-gray" aria-label="Fermer le menu">
-                            <CloseIcon />
+                        <button onClick={close} className="p-2" aria-label="Fermer le menu">
+                            <Image src="/icons/ico-close.svg" alt="Fermer" width={24} height={24} />
                         </button>
                     </div>
 

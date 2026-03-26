@@ -81,33 +81,15 @@ export default async function PropertyPage({ params }: Props) {
                 Retour aux annonces
             </Link>
 
-            {/* Galerie + Hôte */}
+            {/* Galerie + Hôte + Détails */}
             <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
                 {/* Galerie d'images */}
                 <ImageGallery images={pictures} alt={title} />
 
-                {/* Carte hôte */}
-                <div className="rounded-[10px] bg-white p-6 shadow-sm h-fit">
-                    <h2 className="text-sm font-bold">Votre hôte</h2>
-
-                    <div className="mt-4 flex items-center gap-3">
-                        <Avatar src={host.picture} alt={host.name} size="lg" />
-                        <span className="font-medium">{host.name}</span>
-                        <Rating score={rating_avg} />
-                    </div>
-
-                    <div className="mt-5 flex flex-col gap-3">
-                        <Button variant="full" href={`/contact?hostId=${host.id}&hostName=${encodeURIComponent(host.name)}`}>
-                            Contacter l&apos;hôte
-                        </Button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Détails du logement — même largeur que la galerie */}
-            <div className="mt-6 rounded-[10px] border border-light-gray bg-white p-6 [&>*+*]:mt-10 lg:mr-86">
+                {/* Détails du logement — même largeur que la galerie */}
+                <div className="rounded-[10px] border border-light-gray bg-white p-6 [&>*+*]:mt-10">
                 <div>
-                    <h1 className="text-xl font-bold">{title}</h1>
+                    <h1 className="text-xl font-medium">{title}</h1>
                     {location && (
                         <div className="mt-2 flex items-center gap-1 text-dark-gray">
                             <Image src="/icons/ico-localisation.svg" alt="Emplacement" width={14} height={14} className="inline-block mr-1" />
@@ -117,9 +99,7 @@ export default async function PropertyPage({ params }: Props) {
                 </div>
 
                 {description && (
-                    <Collapse title="Description" defaultOpen>
                         <p className="text-sm text-dark-gray">{description}</p>
-                    </Collapse>
                 )}
 
                 {/* Équipements */}
@@ -143,6 +123,24 @@ export default async function PropertyPage({ params }: Props) {
                         </div>
                     </Collapse>
                 )}
+                </div>
+
+                {/* Carte hôte — en mobile tout en bas, en desktop colonne droite */}
+                <div className="order-last lg:order-0 lg:row-start-1 lg:col-start-2 lg:row-span-2 rounded-[10px] bg-white p-6 shadow-sm h-fit">
+                    <h2 className="text-sm font-bold">Votre hôte</h2>
+
+                    <div className="mt-4 flex items-center gap-2 min-w-0 sm:gap-3">
+                        <Avatar src={host.picture} alt={host.name} size="md" className="sm:w-20! sm:h-20!" />
+                        <span className="truncate text-sm font-medium sm:text-base">{host.name}</span>
+                        <Rating score={rating_avg} className="shrink-0 text-xs sm:text-sm" />
+                    </div>
+
+                    <div className="mt-5 flex flex-col gap-3">
+                        <Button variant="full" href={`/contact?hostId=${host.id}&hostName=${encodeURIComponent(host.name)}`}>
+                            Contacter l&apos;hôte
+                        </Button>
+                    </div>
+                </div>
             </div>
         </main>
     );

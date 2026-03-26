@@ -30,8 +30,8 @@ export default function ConversationList({
                         <button
                             type="button"
                             onClick={() => onSelect(conv.id)}
-                            className={`flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-light-gray/50 ${
-                                isActive ? "bg-light-gray/60" : ""
+                            className={`flex w-full cursor-pointer items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-light-orange ${
+                                isActive ? "bg-light-orange" : ""
                             }`}
                         >
                             <Avatar

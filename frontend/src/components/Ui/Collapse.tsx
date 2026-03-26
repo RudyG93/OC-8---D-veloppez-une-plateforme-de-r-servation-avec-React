@@ -39,7 +39,7 @@ export default function Collapse({ title, children, defaultOpen = false }: Colla
             <button
                 type="button"
                 onClick={() => setIsOpen((prev) => !prev)}
-                className="flex w-full items-center justify-between py-2 text-sm font-bold transition-colors hover:text-main-red cursor-pointer"
+                className="flex w-full items-center justify-between py-2 text-sm font-medium transition-colors hover:text-main-red cursor-pointer"
                 aria-expanded={isOpen}
             >
                 {title}

@@ -6,7 +6,8 @@ interface TagProps {
 export default function Tag({ label, className = "" }: TagProps) {
     return (
         <span
-            className={`flex w-full items-center justify-center rounded-[5px] bg-light-gray py-2 text-xs text-dark-gray md:text-sm ${className}`}
+            title={label}
+            className={`block w-full truncate rounded-[5px] bg-light-gray px-2 py-2 text-center text-xs text-dark-gray md:text-sm ${className}`}
         >
             {label}
         </span>

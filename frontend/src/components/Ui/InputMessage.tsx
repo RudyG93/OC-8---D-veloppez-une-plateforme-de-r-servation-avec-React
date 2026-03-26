@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, type ComponentProps } from "react";
-import SendIcon from "@/components/Icons/SendIcon";
 
 const fieldBase =
     "w-full rounded-[4px] border border-light-gray bg-white px-[10px] py-[16px] text-sm text-black placeholder:text-dark-gray/50 outline-none focus:border-main-red transition-colors";
@@ -42,10 +42,10 @@ export default function InputMessage({ onSubmit, ...props }: InputMessageProps) 
             <button
                 type="button"
                 onClick={handleSend}
-                className={`${actionButton} absolute bottom-3 right-3`}
+                className={`${actionButton} absolute bottom-4 right-5`}
                 aria-label="Envoyer le message"
             >
-                <SendIcon />
+                <Image src="/icons/ico-send.svg" alt="Envoyer" width={10} height={10} />
             </button>
         </div>
     );

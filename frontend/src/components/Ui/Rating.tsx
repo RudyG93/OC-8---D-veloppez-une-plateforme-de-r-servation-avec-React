@@ -5,7 +5,7 @@ interface RatingProps {
 
 export default function Rating({ score, className = "" }: RatingProps) {
     return (
-        <span className={`inline-flex items-center gap-1 text-sm font-medium ${className}`} role="img" aria-label={`Note : ${score} sur 5`}>
+        <span className={`inline-flex bg-light-gray items-center gap-1 p-2 rounded-[10px] text-sm font-medium ${className}`} role="img" aria-label={`Note : ${score} sur 5`}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"

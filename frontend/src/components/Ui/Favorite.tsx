@@ -9,7 +9,7 @@ interface FavoriteProps {
 
 /**
  * Bouton cœur pour ajouter/retirer une propriété des favoris.
- * Se connecte au FavoritesContext global (localStorage).
+ * Utilise le path de ico-fav.svg en inline pour pouvoir changer le fill dynamiquement.
  */
 export default function Favorite({ propertyId, className = "" }: FavoriteProps) {
     const { isFavorite, toggleFavorite } = useFavorites();
@@ -22,22 +22,22 @@ export default function Favorite({ propertyId, className = "" }: FavoriteProps) 
                 e.stopPropagation();
                 toggleFavorite(propertyId);
             }}
-            className={`w-10 h-10 rounded-[10px] bg-white shadow-sm flex items-center justify-center cursor-pointer transition-colors ${className}`}
+            className={`w-8 h-8 rounded-[5px] bg-white shadow-sm flex items-center justify-center cursor-pointer transition-colors ${className}`}
             aria-label={liked ? "Retirer des favoris" : "Ajouter aux favoris"}
         >
             <svg
+                width={10}
+                height={10}
+                viewBox="0 0 10 9"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                width={18}
-                height={18}
-                viewBox="0 0 24 24"
-                fill={liked ? "currentColor" : "none"}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={`transition-colors ${liked ? "text-main-red" : "text-dark-gray"}`}
             >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                <path
+                    d="M0 2.742C0 6.434 4.8 8.914 4.8 8.914C4.8 8.914 9.6 6.436 9.6 2.742C9.6 1.228 8.372 0 6.858 0C6.034 0 5.304 0.37 4.8 0.946C4.298 0.37 3.566 0 2.742 0C1.228 0 0 1.226 0 2.742Z"
+                    fill={liked ? "#99331A" : "#565656"}
+                    opacity={liked ? 1 : 0.7}
+                    className="transition-all duration-200"
+                />
             </svg>
         </button>
     );
