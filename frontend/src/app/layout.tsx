@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     siteName: "Kasa",
+    images: ["/img-landing.png"],
   },
   robots: {
     index: true,
