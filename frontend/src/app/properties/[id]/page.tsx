@@ -14,7 +14,7 @@ import Tag from "@/components/Ui/Tag";
 import Collapse from "@/components/Ui/Collapse";
 import Image from "next/image";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001").replace(/\/$/, "");
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -45,7 +45,7 @@ export default async function PropertyPage({ params }: Props) {
         notFound();
     }
 
-    const { title, location, description, host, rating_avg, pictures, equipments, tags, price_per_night } =
+    const { title, location, description, host, rating_avg, ratings_count, pictures, equipments, tags, price_per_night } =
         property;
 
     const jsonLd = {
@@ -63,6 +63,7 @@ export default async function PropertyPage({ params }: Props) {
                   "@type": "AggregateRating",
                   ratingValue: rating_avg,
                   bestRating: 5,
+                  reviewCount: ratings_count || 1,
               }
             : undefined,
         priceRange: price_per_night ? `${price_per_night}€ / nuit` : undefined,
