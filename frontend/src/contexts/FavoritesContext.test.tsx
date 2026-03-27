@@ -1,8 +1,26 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, act } from "@testing-library/react";
-import { FavoritesProvider, useFavorites, __resetFavoritesStore } from "./FavoritesContext";
+import { render, screen, act, waitFor } from "@testing-library/react";
+import { FavoritesProvider, useFavorites } from "./FavoritesContext";
 
-// Composant helper pour tester le hook
+// -------- Mocks --------
+
+const mockUser = { id: 1, name: "Test", email: "t@t.com", picture: null, role: "client" as const };
+
+let authState = { user: mockUser, isAuthenticated: true, isLoading: false };
+vi.mock("@/contexts/AuthContext", () => ({
+    useAuth: () => authState,
+}));
+
+vi.mock("@/api/favorites", () => ({
+    getFavorites: vi.fn().mockResolvedValue([]),
+    addFavorite: vi.fn().mockResolvedValue({ ok: true }),
+    removeFavorite: vi.fn().mockResolvedValue({ ok: true }),
+}));
+
+import { getFavorites, addFavorite, removeFavorite } from "@/api/favorites";
+
+// -------- Composant de test --------
+
 function TestConsumer() {
     const { favorites, isFavorite, toggleFavorite } = useFavorites();
     return (
@@ -30,80 +48,76 @@ function renderWithProvider() {
 
 describe("FavoritesContext", () => {
     beforeEach(() => {
-        localStorage.clear();
-        __resetFavoritesStore();
+        vi.clearAllMocks();
+        authState = { user: mockUser, isAuthenticated: true, isLoading: false };
+        vi.mocked(getFavorites).mockResolvedValue([]);
     });
 
-    it("démarre avec une liste vide", () => {
+    it("démarre avec une liste vide", async () => {
         renderWithProvider();
-        expect(screen.getByTestId("count").textContent).toBe("0");
+        await waitFor(() => {
+            expect(screen.getByTestId("count").textContent).toBe("0");
+        });
         expect(screen.getByTestId("is-fav-1").textContent).toBe("non");
     });
 
-    it("ajoute un favori au clic", () => {
+    it("charge les favoris depuis l'API au montage", async () => {
+        vi.mocked(getFavorites).mockResolvedValue([
+            { id: "1", title: "A", slug: "a", cover: null, description: null, host: { id: 1, name: "H", picture: null }, rating_avg: 0, ratings_count: 0, location: null, price_per_night: 50 },
+        ]);
+
         renderWithProvider();
-        act(() => {
-            screen.getByTestId("toggle-1").click();
+        await waitFor(() => {
+            expect(screen.getByTestId("count").textContent).toBe("1");
+            expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
         });
-        expect(screen.getByTestId("count").textContent).toBe("1");
-        expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
+        expect(getFavorites).toHaveBeenCalledWith(1);
     });
 
-    it("retire un favori au second clic", () => {
+    it("ajoute un favori au clic", async () => {
         renderWithProvider();
+        await waitFor(() => expect(getFavorites).toHaveBeenCalled());
+
         act(() => {
             screen.getByTestId("toggle-1").click();
         });
         expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
+        expect(addFavorite).toHaveBeenCalledWith("1");
+    });
+
+    it("retire un favori au second clic", async () => {
+        vi.mocked(getFavorites).mockResolvedValue([
+            { id: "1", title: "A", slug: "a", cover: null, description: null, host: { id: 1, name: "H", picture: null }, rating_avg: 0, ratings_count: 0, location: null, price_per_night: 50 },
+        ]);
+
+        renderWithProvider();
+        await waitFor(() => {
+            expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
+        });
+
         act(() => {
             screen.getByTestId("toggle-1").click();
         });
         expect(screen.getByTestId("is-fav-1").textContent).toBe("non");
-        expect(screen.getByTestId("count").textContent).toBe("0");
+        expect(removeFavorite).toHaveBeenCalledWith("1");
     });
 
-    it("gère plusieurs favoris indépendamment", () => {
-        renderWithProvider();
-        act(() => {
-            screen.getByTestId("toggle-1").click();
-        });
-        act(() => {
-            screen.getByTestId("toggle-2").click();
-        });
-        expect(screen.getByTestId("count").textContent).toBe("2");
-        expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
-        expect(screen.getByTestId("is-fav-2").textContent).toBe("oui");
+    it("ne fait rien si l'utilisateur n'est pas connecté", async () => {
+        authState = { user: null as never, isAuthenticated: false, isLoading: false };
 
-        // Retirer seulement le 1
+        renderWithProvider();
+        await waitFor(() => {
+            expect(screen.getByTestId("count").textContent).toBe("0");
+        });
+
         act(() => {
             screen.getByTestId("toggle-1").click();
         });
-        expect(screen.getByTestId("count").textContent).toBe("1");
         expect(screen.getByTestId("is-fav-1").textContent).toBe("non");
-        expect(screen.getByTestId("is-fav-2").textContent).toBe("oui");
-    });
-
-    it("persiste les favoris dans localStorage", () => {
-        renderWithProvider();
-        act(() => {
-            screen.getByTestId("toggle-1").click();
-        });
-        const stored = JSON.parse(localStorage.getItem("kasa_favorites") || "[]");
-        expect(stored).toEqual(["1"]);
-    });
-
-    it("charge les favoris depuis localStorage au montage", () => {
-        localStorage.setItem("kasa_favorites", JSON.stringify(["1", "2"]));
-        __resetFavoritesStore(); // re-lire le localStorage mis à jour
-
-        renderWithProvider();
-        expect(screen.getByTestId("count").textContent).toBe("2");
-        expect(screen.getByTestId("is-fav-1").textContent).toBe("oui");
-        expect(screen.getByTestId("is-fav-2").textContent).toBe("oui");
+        expect(addFavorite).not.toHaveBeenCalled();
     });
 
     it("lance une erreur si useFavorites est utilisé hors du Provider", () => {
-        // Supprimer les erreurs console attendues
         const spy = vi.spyOn(console, "error").mockImplementation(() => {});
         expect(() => render(<TestConsumer />)).toThrow(
             "useFavorites doit être utilisé dans un FavoritesProvider",

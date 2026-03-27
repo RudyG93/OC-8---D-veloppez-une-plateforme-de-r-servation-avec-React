@@ -4,96 +4,60 @@ import {
     createContext,
     useContext,
     useCallback,
-    useSyncExternalStore,
+    useState,
+    useEffect,
     type ReactNode,
 } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+    getFavorites,
+    addFavorite,
+    removeFavorite,
+} from "@/api/favorites";
 
 interface FavoritesContextValue {
     /** IDs des propriétés en favoris */
     favorites: string[];
     /** Vérifie si une propriété est en favoris */
     isFavorite: (propertyId: string) => boolean;
-    /** Ajoute ou retire un favori, renvoie le nouvel état */
-    toggleFavorite: (propertyId: string) => boolean;
+    /** Ajoute ou retire un favori (ne fait rien si non connecté) */
+    toggleFavorite: (propertyId: string) => void;
 }
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
-/** Clé localStorage pour persister les IDs de propriétés en favoris */
-const STORAGE_KEY = "kasa_favorites";
-
-/* -------- Store externe (localStorage) -------- */
-// Pattern useSyncExternalStore : un store module-level avec snapshot immuable
-// permet à React de souscrire aux changements sans useState dans le provider
-
-let listeners: Array<() => void> = [];
-let snapshot: string[] = [];
-
-function notifyListeners() {
-    for (const fn of listeners) fn();
-}
-
-function subscribe(callback: () => void): () => void {
-    listeners = [...listeners, callback];
-
-    const onStorage = (e: StorageEvent) => {
-        if (e.key === STORAGE_KEY) {
-            snapshot = readFromStorage();
-            callback();
-        }
-    };
-    window.addEventListener("storage", onStorage);
-
-    return () => {
-        listeners = listeners.filter((l) => l !== callback);
-        window.removeEventListener("storage", onStorage);
-    };
-}
-
-function getSnapshot(): string[] {
-    return snapshot;
-}
-
-// Référence stable pour le SSR : un nouveau [] à chaque appel causerait une boucle
-// infinie de re-renders dans useSyncExternalStore
-const SERVER_SNAPSHOT: string[] = [];
-
-function getServerSnapshot(): string[] {
-    return SERVER_SNAPSHOT;
-}
-
-function readFromStorage(): string[] {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
-        const parsed: unknown = JSON.parse(raw);
-        return Array.isArray(parsed) ? (parsed as string[]) : [];
-    } catch {
-        return [];
-    }
-}
-
-function writeFavorites(ids: string[]) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-    snapshot = ids;
-    notifyListeners();
-}
-
-// Initialisation côté client
-if (typeof window !== "undefined") {
-    snapshot = readFromStorage();
-}
-
-/** Réinitialise l'état interne – usage tests uniquement */
-export function __resetFavoritesStore() {
-    snapshot = readFromStorage();
-    notifyListeners();
-}
-
 /* -------- Provider -------- */
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-    const favorites = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const { user, isAuthenticated } = useAuth();
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+    // Charge les favoris depuis l'API quand l'utilisateur change
+    useEffect(() => {
+        if (!isAuthenticated || !user) return;
+
+        let cancelled = false;
+
+        getFavorites(user.id)
+            .then((props) => {
+                if (!cancelled) {
+                    setFavorites(props.map((p) => p.id));
+                }
+            })
+            .catch(() => {
+                if (!cancelled) setFavorites([]);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [user, isAuthenticated]);
+
+    // Réinitialise les favoris quand l'utilisateur se déconnecte
+    const prevAuthenticated = favorites.length > 0 && !isAuthenticated;
+    if (prevAuthenticated) {
+        setFavorites([]);
+    }
 
     const isFavorite = useCallback(
         (propertyId: string) => favorites.includes(propertyId),
@@ -102,21 +66,23 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
     const toggleFavorite = useCallback(
         (propertyId: string) => {
-            let next: string[];
-            let liked: boolean;
+            if (!isAuthenticated) return;
 
-            if (favorites.includes(propertyId)) {
-                next = favorites.filter((id) => id !== propertyId);
-                liked = false;
+            const isCurrentlyFavorite = favorites.includes(propertyId);
+
+            if (isCurrentlyFavorite) {
+                setFavorites((prev) => prev.filter((id) => id !== propertyId));
+                removeFavorite(propertyId).catch(() => {
+                    setFavorites((prev) => [...prev, propertyId]);
+                });
             } else {
-                next = [...favorites, propertyId];
-                liked = true;
+                setFavorites((prev) => [...prev, propertyId]);
+                addFavorite(propertyId).catch(() => {
+                    setFavorites((prev) => prev.filter((id) => id !== propertyId));
+                });
             }
-
-            writeFavorites(next);
-            return liked;
         },
-        [favorites],
+        [favorites, isAuthenticated],
     );
 
     return (
