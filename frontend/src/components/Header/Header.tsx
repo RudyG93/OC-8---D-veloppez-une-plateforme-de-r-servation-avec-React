@@ -26,7 +26,6 @@ export default function Header() {
                             width={120}
                             height={40}
                             priority
-                            unoptimized
                         />
                     </Link>
 
@@ -43,7 +42,6 @@ export default function Header() {
                         width={32}
                         height={37}
                         priority
-                        unoptimized
                     />
                 </Link>
 

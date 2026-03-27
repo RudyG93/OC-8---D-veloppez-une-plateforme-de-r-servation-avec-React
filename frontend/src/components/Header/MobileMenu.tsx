@@ -34,7 +34,6 @@ export default function MobileMenu() {
                                 alt="Kasa"
                                 width={32}
                                 height={37}
-                                unoptimized
                             />
                         </Link>
                         <button onClick={close} className="p-2" aria-label="Fermer le menu">

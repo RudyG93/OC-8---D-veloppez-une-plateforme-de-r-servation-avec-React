@@ -23,7 +23,6 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                         src={cover}
                         alt={title}
                         fill
-                        unoptimized
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -42,7 +41,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             {/* -------- Infos -------- */}
             <div className="flex flex-col gap-10 p-5 pb-5">
                 <div className="flex flex-col gap-1.5">
-                    <h3 className="font-medium text-lg truncate">{title}</h3>
+                    <h2 className="font-medium text-lg truncate">{title}</h2>
                     {location && (
                         <p className="text-sm text-dark-gray truncate">{location}</p>
                     )}

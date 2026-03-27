@@ -64,9 +64,9 @@ export default async function Home() {
                         src="/img-landing.png"
                         alt="Maison moderne avec vue sur la nature"
                         fill
+                        sizes="(max-width: 1024px) 100vw, 1152px"
                         className="object-cover"
                         priority
-                        unoptimized
                     />
                 </div>
             </section>

@@ -56,7 +56,6 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                 src={images[current]}
                 alt={`${alt} - ${current + 1} sur ${total}`}
                 fill
-                unoptimized
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 className="object-cover transition-opacity duration-300"
                 priority={current === 0}

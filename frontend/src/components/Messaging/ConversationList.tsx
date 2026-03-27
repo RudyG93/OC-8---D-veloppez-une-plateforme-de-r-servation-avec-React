@@ -36,7 +36,7 @@ export default function ConversationList({
                         >
                             <Avatar
                                 src={conv.participant.picture}
-                                alt={conv.participant.name}
+                                alt=""
                                 size="md"
                             />
 

@@ -36,6 +36,7 @@ export default function InputMessage({ onSubmit, ...props }: InputMessageProps) 
             <textarea
                 ref={textRef}
                 onKeyDown={handleKeyDown}
+                aria-label={props.placeholder || "Message"}
                 className={`${fieldBase} min-h-20 pr-14 resize-none rounded-[10px]`}
                 {...props}
             />

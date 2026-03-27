@@ -39,7 +39,6 @@ export default function AboutPage() {
                     sizes="100vw"
                     className="object-cover"
                     style={{ objectFit: "cover" }}
-                    unoptimized
                 />
             </div>
 
@@ -65,7 +64,6 @@ export default function AboutPage() {
                             sizes="100vw"
                             className="object-cover"
                             style={{ objectFit: "cover" }}
-                            unoptimized
                         />
                     </div>
 
@@ -85,7 +83,6 @@ export default function AboutPage() {
                         sizes="50vw"
                         className="object-cover"
                         style={{ objectFit: "cover" }}
-                        unoptimized
                     />
                 </div>
             </div>
