@@ -1,26 +1,12 @@
 "use client";
 
 import { Suspense } from "react";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
+import AddPropertyContent from "@/components/AddPropertyContent/AddPropertyContent";
 
-function AddPropertyPageInner() {
-    const { isLoading } = useRequireAuth();
-
-    if (isLoading) {
-        return (
-            <main className="flex min-h-[60vh] items-center justify-center text-dark-gray">
-                Chargement...
-            </main>
-        );
-    }
-
-    return (
-        <main className="mx-auto max-w-7xl px-6 py-12">
-            <h1 className="text-2xl font-bold">Ajouter un logement</h1>
-        </main>
-    );
-}
-
+/**
+ * Page d'ajout de logement – Client Component.
+ * Route protégée par authentification.
+ */
 export default function AddPropertyPage() {
     return (
         <Suspense
@@ -30,7 +16,7 @@ export default function AddPropertyPage() {
                 </main>
             }
         >
-            <AddPropertyPageInner />
+            <AddPropertyContent />
         </Suspense>
     );
 }

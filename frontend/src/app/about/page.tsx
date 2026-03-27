@@ -7,11 +7,15 @@ export const metadata: Metadata = {
         "Découvrez Kasa, la plateforme de location de logements entre particuliers. Notre mission, notre équipe et nos valeurs.",
 };
 
+/**
+ * Page À propos – Server Component.
+ * Présente la mission et les valeurs de Kasa.
+ */
 export default function AboutPage() {
     return (
         <main className="mx-auto max-w-6xl px-5 py-10 md:py-14">
             {/* ===== Titre + intro ===== */}
-            <h1 className="text-center text-2xl font-bold text-main-red md:text-3xl">
+            <h1 className="text-center text-2xl font-bold text-main-red md:text-4xl">
                 À propos
             </h1>
 

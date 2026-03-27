@@ -1,3 +1,7 @@
+/**
+ * Page de détail d'un logement – Server Component.
+ * Récupère les données via l'API et génère les métadonnées dynamiques (title, OG, JSON-LD).
+ */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";

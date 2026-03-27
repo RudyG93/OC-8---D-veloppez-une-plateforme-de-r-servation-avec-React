@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+/** Footer affichant le logo Kasa et le copyright. */
 export default function Footer() {
     return (
         <footer className="mt-auto bg-white px-6 md:px-10 py-4 border-t border-light-gray flex items-center justify-between">

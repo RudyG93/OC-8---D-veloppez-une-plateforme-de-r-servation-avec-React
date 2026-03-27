@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getProperties } from "@/api/properties";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 
+/** Étapes affichées dans la section "Comment ça marche". */
 const STEPS = [
     {
         title: "Recherchez",
@@ -20,6 +21,11 @@ const STEPS = [
     },
 ];
 
+/**
+ * Page d'accueil – Server Component.
+ * Affiche le hero, la grille de logements et les étapes d'utilisation.
+ * Inclut les microdonnées JSON-LD (ItemList) pour le SEO.
+ */
 export default async function Home() {
     const properties = await getProperties();
 

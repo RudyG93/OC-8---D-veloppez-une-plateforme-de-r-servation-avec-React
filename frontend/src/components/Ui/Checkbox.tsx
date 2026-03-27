@@ -1,7 +1,7 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 interface CheckboxProps extends Omit<ComponentProps<"input">, "type"> {
-    label: string;
+    label: ReactNode;
 }
 
 export default function Checkbox({ label, id, className = "", ...props }: CheckboxProps) {

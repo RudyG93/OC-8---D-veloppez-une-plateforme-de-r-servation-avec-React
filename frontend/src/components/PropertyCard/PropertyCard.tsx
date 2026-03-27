@@ -40,16 +40,16 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             </div>
 
             {/* -------- Infos -------- */}
-            <div className="flex flex-col gap-1.5 p-5 pb-6">
+            <div className="flex flex-col gap-10 p-5 pb-5">
                 <div className="flex flex-col gap-1.5">
-                    <h3 className="font-bold text-lg truncate">{title}</h3>
+                    <h3 className="font-medium text-lg truncate">{title}</h3>
                     {location && (
                         <p className="text-sm text-dark-gray truncate">{location}</p>
                     )}
                 </div>
 
                 <p className="mt-4 text-sm">
-                    <span className="font-bold">{price_per_night}&euro;</span>{" "}
+                    <span className="font-medium">{price_per_night}&euro;</span>{" "}
                     par nuit
                 </p>
             </div>

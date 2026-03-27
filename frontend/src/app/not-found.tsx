@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+/** Page 404 personnalisée affichant un message et un lien de retour à l'accueil. */
 export default function NotFound() {
   return (
     <main className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-10 md:gap-10 md:px-6">

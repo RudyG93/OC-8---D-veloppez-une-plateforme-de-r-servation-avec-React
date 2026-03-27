@@ -89,7 +89,7 @@ export default function MobileMenu() {
                         {isAuthenticated ? (
                             <button
                                 onClick={() => { logout(); close(); }}
-                                className="py-5 text-lg text-left text-dark-gray hover:text-main-red transition-colors cursor-pointer"
+                                className="py-5 text-base text-left text-dark-gray hover:text-main-red transition-colors cursor-pointer"
                             >
                                 Se déconnecter ({user?.name?.split(" ")[0]})
                             </button>
@@ -97,7 +97,7 @@ export default function MobileMenu() {
                             <Link
                                 href="/login"
                                 onClick={close}
-                                className="py-5 text-lg text-main-red hover:text-dark-orange transition-colors"
+                                className="py-5 text-base text-main-red hover:text-dark-orange transition-colors"
                             >
                                 Se connecter
                             </Link>
