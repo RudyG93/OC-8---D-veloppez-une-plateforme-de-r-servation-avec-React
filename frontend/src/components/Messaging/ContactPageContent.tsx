@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import {
     getConversations,
@@ -11,11 +11,11 @@ import {
 } from "@/api/messages";
 import ConversationList from "@/components/Messaging/ConversationList";
 import ChatView from "@/components/Messaging/ChatView";
+import BackButton from "@/components/Ui/BackButton";
 import type { Conversation, Message } from "@/types/message";
 
 export default function ContactPageContent() {
     const { user, isLoading } = useRequireAuth();
-    const router = useRouter();
     const searchParams = useSearchParams();
     const hostId = searchParams.get("hostId");
 
@@ -133,13 +133,7 @@ export default function ContactPageContent() {
                 }`}
             >
                 <div className="shrink-0 p-5">
-                    <button
-                        type="button"
-                        onClick={() => router.push("/")}
-                        className="inline-block rounded-[10px] bg-light-gray px-4 py-2 text-sm text-dark-gray transition-colors hover:bg-dark-gray/10 cursor-pointer"
-                    >
-                        &larr; Retour
-                    </button>
+                    <BackButton label="← Retour" icon={false} />
                     <h1 className="mt-4 text-4xl font-medium">Messages</h1>
                 </div>
 

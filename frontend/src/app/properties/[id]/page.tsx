@@ -2,12 +2,12 @@
  * Page de détail d'un logement – Server Component.
  * Récupère les données via l'API et génère les métadonnées dynamiques (title, OG, JSON-LD).
  */
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPropertyById } from "@/api/properties";
 import ImageGallery from "@/components/ImageGallery/ImageGallery";
 import Avatar from "@/components/Ui/Avatar";
+import BackButton from "@/components/Ui/BackButton";
 import Button from "@/components/Ui/Button";
 import Rating from "@/components/Ui/Rating";
 import Tag from "@/components/Ui/Tag";
@@ -75,15 +75,7 @@ export default async function PropertyPage({ params }: Props) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             {/* Retour */}
-            <Link
-                href="/"
-                className="inline-block rounded-[10px] bg-light-gray px-4 py-2 text-sm text-dark-gray transition-colors ml-5 mt-10 hover:bg-dark-gray/10"
-            >
-                <div className="inline-block mr-1">
-                    <Image src="/icons/ico-back.svg" alt="" width={10} height={10} />
-                </div>
-                Retour aux annonces
-            </Link>
+            <BackButton className="ml-5 mt-10" />
 
             {/* Galerie + Hôte + Détails */}
             <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
