@@ -20,29 +20,26 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { id } = await params;
-    try {
-        const property = await getPropertyById(id);
-        return {
-            title: property.title,
-            description: property.description || `Découvrez ${property.title} sur Kasa`,
-            openGraph: {
-                title: property.title,
-                description: property.description || `Découvrez ${property.title} sur Kasa`,
-                images: property.pictures.length > 0 ? [property.pictures[0]] : [],
-            },
-        };
-    } catch {
+    const property = await getPropertyById(id);
+    if (!property) {
         return { title: "Logement introuvable" };
     }
+    return {
+        title: property.title,
+        description: property.description || `Découvrez ${property.title} sur Kasa`,
+        openGraph: {
+            title: property.title,
+            description: property.description || `Découvrez ${property.title} sur Kasa`,
+            images: property.pictures.length > 0 ? [property.pictures[0]] : [],
+        },
+    };
 }
 
 export default async function PropertyPage({ params }: Props) {
     const { id } = await params;
 
-    let property;
-    try {
-        property = await getPropertyById(id);
-    } catch {
+    const property = await getPropertyById(id);
+    if (!property) {
         notFound();
     }
 

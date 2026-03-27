@@ -5,14 +5,22 @@ import type { Property, PropertyDetail, CreatePropertyBody, UpdatePropertyBody }
  * Récupère toutes les propriétés
  */
 export async function getProperties(): Promise<Property[]> {
-    return apiFetch<Property[]>('/api/properties');
+    try {
+        return await apiFetch<Property[]>('/api/properties');
+    } catch {
+        return [];
+    }
 }
 
 /**
  * Récupère une propriété par son ID (détail complet)
  */
-export async function getPropertyById(id: string): Promise<PropertyDetail> {
-    return apiFetch<PropertyDetail>(`/api/properties/${id}`);
+export async function getPropertyById(id: string): Promise<PropertyDetail | null> {
+    try {
+        return await apiFetch<PropertyDetail>(`/api/properties/${id}`);
+    } catch {
+        return null;
+    }
 }
 
 /**
