@@ -2,6 +2,9 @@ import Image from "next/image";
 import { getProperties } from "@/api/properties";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 
+/** Force la regénération de la page toutes les 60 secondes (ISR) */
+export const revalidate = 60;
+
 /** Étapes affichées dans la section "Comment ça marche". */
 const STEPS = [
     {
