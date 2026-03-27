@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
-import { FavoritesProvider } from "@/contexts/FavoritesContext";
 
 const meta = {
     title: "Components/PropertyCard",
@@ -9,11 +8,9 @@ const meta = {
     tags: ["autodocs"],
     decorators: [
         (Story) => (
-            <FavoritesProvider>
-                <div style={{ maxWidth: 380 }}>
-                    <Story />
-                </div>
-            </FavoritesProvider>
+            <div style={{ maxWidth: 380 }}>
+                <Story />
+            </div>
         ),
     ],
 } satisfies Meta<typeof PropertyCard>;

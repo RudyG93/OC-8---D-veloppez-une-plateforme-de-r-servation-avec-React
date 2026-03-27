@@ -1,6 +1,21 @@
 import type { Preview } from '@storybook/nextjs-vite'
+import React from 'react'
+import { AuthProvider } from '../src/contexts/AuthContext'
+import { FavoritesProvider } from '../src/contexts/FavoritesContext'
+import '../src/app/globals.css'
 
 const preview: Preview = {
+  decorators: [
+    (Story) => React.createElement(
+      AuthProvider,
+      null,
+      React.createElement(
+        FavoritesProvider,
+        null,
+        React.createElement(Story),
+      ),
+    ),
+  ],
   parameters: {
     controls: {
       matchers: {
