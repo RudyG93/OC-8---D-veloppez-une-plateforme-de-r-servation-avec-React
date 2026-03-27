@@ -14,6 +14,8 @@ import Tag from "@/components/Ui/Tag";
 import Collapse from "@/components/Ui/Collapse";
 import Image from "next/image";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+
 interface Props {
     params: Promise<{ id: string }>;
 }
@@ -49,6 +51,7 @@ export default async function PropertyPage({ params }: Props) {
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "LodgingBusiness",
+        url: `${SITE_URL}/properties/${id}`,
         name: title,
         description: description || undefined,
         image: pictures.length > 0 ? pictures[0] : undefined,
@@ -77,7 +80,7 @@ export default async function PropertyPage({ params }: Props) {
                 className="inline-block rounded-[10px] bg-light-gray px-4 py-2 text-sm text-dark-gray transition-colors ml-5 mt-10 hover:bg-dark-gray/10"
             >
                 <div className="inline-block mr-1">
-                    <Image src="/icons/ico-back.svg" alt="Retour aux annonces" width={10} height={10} />
+                    <Image src="/icons/ico-back.svg" alt="" width={10} height={10} />
                 </div>
                 Retour aux annonces
             </Link>
@@ -131,7 +134,7 @@ export default async function PropertyPage({ params }: Props) {
                     <h2 className="text-sm font-bold">Votre hôte</h2>
 
                     <div className="mt-4 flex items-center gap-2 min-w-0 sm:gap-3">
-                        <Avatar src={host.picture} alt={host.name} size="md" className="sm:w-20! sm:h-20!" />
+                        <Avatar src={host.picture} alt="" size="md" className="sm:w-20! sm:h-20!" />
                         <span className="truncate text-sm font-medium sm:text-base">{host.name}</span>
                         <Rating score={rating_avg} className="shrink-0 text-xs sm:text-sm" />
                     </div>
