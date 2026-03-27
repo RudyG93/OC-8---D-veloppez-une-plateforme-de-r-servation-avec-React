@@ -14,6 +14,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     return (
         <Link
             href={`/properties/${id}`}
+            aria-label={title}
             className="group block rounded-[10px] bg-white overflow-hidden transition-shadow"
         >
             {/* -------- Image + bouton favori -------- */}
