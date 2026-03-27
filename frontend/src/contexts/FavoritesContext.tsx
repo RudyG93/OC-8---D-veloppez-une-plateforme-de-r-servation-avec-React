@@ -59,6 +59,15 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         setFavorites([]);
     }
 
+    // Miroir dans le localStorage pour le débogage / la persistance visuelle
+    useEffect(() => {
+        if (isAuthenticated) {
+            localStorage.setItem("kasa_favorites", JSON.stringify(favorites));
+        } else {
+            localStorage.removeItem("kasa_favorites");
+        }
+    }, [favorites, isAuthenticated]);
+
     const isFavorite = useCallback(
         (propertyId: string) => favorites.includes(propertyId),
         [favorites],
