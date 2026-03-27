@@ -27,7 +27,15 @@ export function authHeaders(): Record<string, string> {
  * Wrapper fetch qui gère les erreurs API automatiquement
  */
 export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
         const body = await response.json().catch(() => ({}));
