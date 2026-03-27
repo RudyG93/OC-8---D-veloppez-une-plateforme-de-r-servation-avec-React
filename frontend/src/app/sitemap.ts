@@ -6,6 +6,8 @@
 import { getProperties } from "@/api/properties";
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
