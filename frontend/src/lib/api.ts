@@ -28,7 +28,7 @@ export function authHeaders(): Record<string, string> {
  */
 export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
